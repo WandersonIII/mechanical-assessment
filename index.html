@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mechanical Aptitude Assessment</title>
+  <script src="https://embed.typeform.com/embed.js"></script>
   <style>
     body {
       margin: 0;
@@ -22,38 +23,78 @@
       height: auto;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      display: none;
     }
-    h1 {
-      margin-top: 30px;
-      font-size: 2rem;
-      color: #222;
+    #typeform, #outro {
+      display: none;
     }
-    .start-btn {
-      display: inline-block;
-      margin-top: 30px;
+    #start-button {
       padding: 15px 30px;
       font-size: 1.2rem;
-      color: #fff;
       background-color: #0078D4;
+      color: white;
       border: none;
       border-radius: 5px;
-      text-decoration: none;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
-    .start-btn:hover {
-      background-color: #005a9e;
+    #start-screen {
+      margin-top: 100px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <video autoplay muted playsinline controls>
-      <source src="assessment_launch_video_fixed.mp4" type="video/mp4">
+    <!-- Start Screen -->
+    <div id="start-screen">
+      <h1>Welcome to the Mechanical Aptitude Assessment</h1>
+      <button id="start-button">Begin Assessment</button>
+    </div>
+
+    <!-- Intro Video -->
+    <video id="intro" controls onended="showTypeform()">
+      <source src="intro.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
-    <h1>Welcome to the Mechanical Aptitude Assessment</h1>
-    <a href="https://form.typeform.com/to/QvIBPJsw" target="_blank" class="start-btn">Begin Assessment</a>
+
+    <!-- Typeform Embed -->
+    <div id="typeform"></div>
+
+    <!-- Outro Video -->
+    <video id="outro" controls>
+      <source src="outro.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
   </div>
+
+  <script>
+    document.getElementById('start-button').onclick = function () {
+      document.getElementById('start-screen').style.display = 'none';
+      const intro = document.getElementById('intro');
+      intro.style.display = 'block';
+      intro.muted = false;
+      intro.play();
+    };
+
+    function showTypeform() {
+      document.getElementById('intro').style.display = 'none';
+      document.getElementById('typeform').style.display = 'block';
+
+      window.typeformEmbed.makeWidget(
+        document.getElementById('typeform'),
+        "https://yourtypeformlink.com",  // Replace with your real Typeform link
+        {
+          hideFooter: true,
+          hideHeaders: true,
+          opacity: 0,
+          onSubmit: function() {
+            document.getElementById('typeform').style.display = 'none';
+            const outro = document.getElementById('outro');
+            outro.style.display = 'block';
+            outro.play();
+          }
+        }
+      );
+    }
+  </script>
 </body>
 </html>
