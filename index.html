@@ -18,17 +18,21 @@
       margin: 0 auto;
       padding: 40px 20px;
     }
-    video {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.15);
-  display: none;
-  background-color: white;
-  margin: 0;
-  padding: 0;
-}
-    #typeform, #outro {
+    .video-wrapper {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      background: black;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      overflow: hidden;
+      display: none;
+    }
+    .video-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #typeform {
       display: none;
       height: 100vh;
     }
@@ -55,45 +59,51 @@
     </div>
 
     <!-- Intro Video -->
-    <video id="intro" controls onended="showTypeform()">
-      <source src="assessment_launch_video_fixed.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+    <div id="intro-wrapper" class="video-wrapper">
+      <video id="intro" controls onended="showTypeform()">
+        <source src="intro.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
 
     <!-- Typeform Embed -->
     <div id="typeform"></div>
 
     <!-- Outro Video -->
-    <video id="outro" controls>
-      <source src="assessment_launch_video_fixed.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+    <div id="outro-wrapper" class="video-wrapper">
+      <video id="outro" controls>
+        <source src="outro.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
   </div>
 
   <script>
     document.getElementById('start-button').onclick = function () {
       document.getElementById('start-screen').style.display = 'none';
+      const introWrapper = document.getElementById('intro-wrapper');
+      introWrapper.style.display = 'block';
       const intro = document.getElementById('intro');
-      intro.style.display = 'block';
       intro.muted = false;
       intro.play();
     };
 
     function showTypeform() {
-      document.getElementById('intro').style.display = 'none';
+      document.getElementById('intro-wrapper').style.display = 'none';
       document.getElementById('typeform').style.display = 'block';
 
       window.typeformEmbed.makeWidget(
         document.getElementById('typeform'),
-        "https://form.typeform.com/to/QvIBPJsw",  // Replace with your real Typeform link
+        "https://yourtypeformlink.com",  // Replace with your real Typeform link
         {
           hideFooter: true,
           hideHeaders: true,
           opacity: 0,
           onSubmit: function() {
             document.getElementById('typeform').style.display = 'none';
+            const outroWrapper = document.getElementById('outro-wrapper');
+            outroWrapper.style.display = 'block';
             const outro = document.getElementById('outro');
-            outro.style.display = 'block';
             outro.play();
           }
         }
